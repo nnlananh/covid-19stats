@@ -1,1 +1,7 @@
-# covid-19stats
+# Covid-19 Stats
+
+# Group 18
+
+Name:
+
+ID:
