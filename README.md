@@ -2,7 +2,9 @@
 
 # Group 18
 
-Name: Nguyễn Nữ Lan Anh          ID: BA12-016
+Name:                                ID:
+          
+      Nguyễn Nữ Lan Anh              BA12-016
 
       Lại Phú Huy                    BA12-084
 
@@ -10,4 +12,4 @@ Name: Nguyễn Nữ Lan Anh          ID: BA12-016
 
       Phùng Nam Khánh                BA12-092
       
-      Ngô Quang Trường               BA12-180
+      Nguyễn Quốc Dương              BI12-123
