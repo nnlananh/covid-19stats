@@ -21,7 +21,7 @@ public class LoginFragment extends Fragment {
     public View onCreateView(@NonNull LayoutInflater inflater, @Nullable ViewGroup container, @Nullable Bundle savedInstanceState) {
         View view = inflater.inflate(R.layout.fragment_login, container, false);
 
-        // Initialize UI components
+        // Initialize UI login components
         edtUsername = view.findViewById(R.id.edtUsername);
         edtPassword = view.findViewById(R.id.edtPassword);
         btnLogin = view.findViewById(R.id.btnLogin);
@@ -33,7 +33,7 @@ public class LoginFragment extends Fragment {
 
             // Simple validation for login
             if (username.equals("admin") && password.equals("1234")) {
-                // Call method in MainActivity to switch to the main content
+                // Call method in MainActivity to switch to the main content when username and passwrod are true
                 ((MainActivity) getActivity()).onLoginSuccess();
             } else {
                 Toast.makeText(getContext(), "Invalid username or password.", Toast.LENGTH_SHORT).show();
