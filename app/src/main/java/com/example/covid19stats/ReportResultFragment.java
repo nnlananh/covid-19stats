@@ -12,22 +12,31 @@ import androidx.fragment.app.Fragment;
 
 public class ReportResultFragment extends Fragment {
 
+    // TextView for displaying the report result
     private TextView tvReportResult;
 
+    // Called to inflate the fragment's view
     @Nullable
     @Override
     public View onCreateView(@NonNull LayoutInflater inflater, @Nullable ViewGroup container, @Nullable Bundle savedInstanceState) {
+        // Inflate the fragment layout from XML (R.layout.fragment_report_result)
         View view = inflater.inflate(R.layout.fragment_report_result, container, false);
 
+        // Initialize the TextView by finding it within the inflated layout
         tvReportResult = view.findViewById(R.id.tvReportResult);
 
-        // Lấy dữ liệu từ Bundle
+        // Retrieve the Bundle containing arguments passed to the fragment
         Bundle bundle = getArguments();
         if (bundle != null) {
+            // Get the "report_data" string from the Bundle
             String reportData = bundle.getString("report_data");
+
+            // Set the retrieved data to the TextView to display it
             tvReportResult.setText(reportData);
         }
 
+        // Return the inflated view to be displayed
         return view;
     }
 }
+
