@@ -1,26 +1,32 @@
 package com.example.covid19stats;
 
+import android.graphics.Typeface;
 import android.os.Bundle;
 import android.view.View;
 import android.widget.Button;
+import android.widget.Toast;
 import androidx.appcompat.app.AppCompatActivity;
+import androidx.core.content.res.ResourcesCompat;
 import androidx.fragment.app.Fragment;
 import androidx.fragment.app.FragmentTransaction;
+import retrofit2.Call;
+import retrofit2.Callback;
+import retrofit2.Response;
 
 public class MainActivity extends AppCompatActivity {
 
     private Button btnCases, btnDeaths, btnSummary, btnPrevention, btnSymptoms, btnTestingInfo, btnUserReport;
     private View buttonsLayout;
+    private ApiService apiService;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_main);
 
-        // Initialize the layout containing the buttons
-        buttonsLayout = findViewById(R.id.buttonsLayout);
+        apiService = RetrofitClient.getRetrofitInstance().create(ApiService.class);
 
-        // Initialize buttons
+        buttonsLayout = findViewById(R.id.buttonsLayout);
         btnCases = findViewById(R.id.btnCases);
         btnDeaths = findViewById(R.id.btnDeaths);
         btnSummary = findViewById(R.id.btnSummary);
@@ -29,24 +35,59 @@ public class MainActivity extends AppCompatActivity {
         btnTestingInfo = findViewById(R.id.btnTestingInfo);
         btnUserReport = findViewById(R.id.btnUserReport);
 
-        // Initially, hide the buttons layout until the user logs in
+        applyCustomFont();
+
         buttonsLayout.setVisibility(View.GONE);
 
-        // Load LoginFragment as the first fragment
         loadFragment(new LoginFragment(), false);
 
-        // Set button click listeners after login
         btnCases.setOnClickListener(v -> loadFragment(new CasesFragment(), true));
-        btnDeaths.setOnClickListener(v -> loadFragment(new DeathsFragment(), true));
         btnSummary.setOnClickListener(v -> loadFragment(new SummaryFragment(), true));
         btnPrevention.setOnClickListener(v -> loadFragment(new PreventionFragment(), true));
         btnSymptoms.setOnClickListener(v -> loadFragment(new SymptomsFragment(), true));
         btnTestingInfo.setOnClickListener(v -> loadFragment(new TestingInfoFragment(), true));
         btnUserReport.setOnClickListener(v -> loadFragment(new UserReportFragment(), true));
+
+        performLogin("user@example.com", "password123");
     }
 
-    // Method to load fragments
-    private void loadFragment(Fragment fragment, boolean addToBackStack) {
+    private void applyCustomFont() {
+        Typeface customFont = ResourcesCompat.getFont(this, R.font.font_regular); // Using R.font.font_regular from res/font
+        if (customFont != null) {
+            btnCases.setTypeface(customFont);
+            btnDeaths.setTypeface(customFont);
+            btnSummary.setTypeface(customFont);
+            btnPrevention.setTypeface(customFont);
+            btnSymptoms.setTypeface(customFont);
+            btnTestingInfo.setTypeface(customFont);
+            btnUserReport.setTypeface(customFont);
+        }
+    }
+
+    private void performLogin(String email, String password) {
+        apiService.loginUser(email, password).enqueue(new Callback<ResponseModel>() {
+            @Override
+            public void onResponse(Call<ResponseModel> call, Response<ResponseModel> response) {
+                if (response.isSuccessful() && response.body() != null) {
+                    if (response.body().getStatus().equals("success")) {
+                        Toast.makeText(MainActivity.this, "Đăng nhập thành công!", Toast.LENGTH_SHORT).show();
+                        onLoginSuccess();
+                    } else {
+                        Toast.makeText(MainActivity.this, "Đăng nhập thất bại: " + response.body().getMessage(), Toast.LENGTH_SHORT).show();
+                    }
+                } else {
+                    Toast.makeText(MainActivity.this, "Phản hồi không thành công!", Toast.LENGTH_SHORT).show();
+                }
+            }
+
+            @Override
+            public void onFailure(Call<ResponseModel> call, Throwable t) {
+                Toast.makeText(MainActivity.this, "Yêu cầu thất bại: " + t.getMessage(), Toast.LENGTH_SHORT).show();
+            }
+        });
+    }
+
+    void loadFragment(Fragment fragment, boolean addToBackStack) {
         FragmentTransaction transaction = getSupportFragmentManager().beginTransaction();
         transaction.replace(R.id.fragmentContainer, fragment);
         if (addToBackStack) {
@@ -55,12 +96,8 @@ public class MainActivity extends AppCompatActivity {
         transaction.commit();
     }
 
-    // This method will be called after a successful login
     public void onLoginSuccess() {
-        // Show the buttons layout after login
         buttonsLayout.setVisibility(View.VISIBLE);
-
-        // Load the default fragment (e.g., CasesFragment) after login success
         loadFragment(new CasesFragment(), false);
     }
 }
