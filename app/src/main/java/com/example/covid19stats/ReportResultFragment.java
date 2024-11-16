@@ -12,31 +12,28 @@ import androidx.fragment.app.Fragment;
 
 public class ReportResultFragment extends Fragment {
 
-    // TextView for displaying the report result
+    // Declare a TextView to display the report result
     private TextView tvReportResult;
 
-    // Called to inflate the fragment's view
     @Nullable
     @Override
     public View onCreateView(@NonNull LayoutInflater inflater, @Nullable ViewGroup container, @Nullable Bundle savedInstanceState) {
-        // Inflate the fragment layout from XML (R.layout.fragment_report_result)
+        // Inflate the layout for this fragment and return the view
         View view = inflater.inflate(R.layout.fragment_report_result, container, false);
 
-        // Initialize the TextView by finding it within the inflated layout
+        // Initialize the TextView for displaying the report result
         tvReportResult = view.findViewById(R.id.tvReportResult);
 
-        // Retrieve the Bundle containing arguments passed to the fragment
+        // Retrieve the data passed from the UserReportFragment via Bundle
         Bundle bundle = getArguments();
         if (bundle != null) {
-            // Get the "report_data" string from the Bundle
+            // Extract the "report_data" string from the Bundle
             String reportData = bundle.getString("report_data");
-
-            // Set the retrieved data to the TextView to display it
+            // Set the extracted data to the TextView to display the report
             tvReportResult.setText(reportData);
         }
 
-        // Return the inflated view to be displayed
+        // Return the view to be displayed
         return view;
     }
 }
-

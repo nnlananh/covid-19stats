@@ -3,5 +3,10 @@
     <color name="black">#FF000000</color>
     <color name="white">#FFFFFF</color>
 
-
+    <color name="purple_500">#6200EE</color> <!-- Đây là mã màu mẫu, bạn có thể thay đổi -->
+    <color name="purple_700">#3700B3</color> <!-- Nếu bạn cần thêm màu tối hơn -->
+    <color name="red">#FF0000</color> <!-- Ví dụ cho màu đỏ, nếu bạn cần -->
+    <color name="green">#00FF00</color> <!-- Ví dụ cho màu xanh lá cây -->
+    <color name="red_dark">#B71C1C</color> <!-- Mã màu mẫu cho màu đỏ tối -->
+    <color name="material_light_background">#F5F5F5</color> <!-- Thêm màu nền sáng này -->
 </resources>

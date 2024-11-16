@@ -1,12 +1,10 @@
 package com.example.covid19stats;
 
-import android.graphics.Typeface;
 import android.os.Bundle;
 import android.view.View;
 import android.widget.Button;
 import android.widget.Toast;
 import androidx.appcompat.app.AppCompatActivity;
-import androidx.core.content.res.ResourcesCompat;
 import androidx.fragment.app.Fragment;
 import androidx.fragment.app.FragmentTransaction;
 import retrofit2.Call;
@@ -22,10 +20,12 @@ public class MainActivity extends AppCompatActivity {
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
-        setContentView(R.layout.activity_main);
+        setContentView(R.layout.activity_main); // Sử dụng đúng bố cục chính
 
+        // Khởi tạo ApiService
         apiService = RetrofitClient.getRetrofitInstance().create(ApiService.class);
 
+        // Khởi tạo các View
         buttonsLayout = findViewById(R.id.buttonsLayout);
         btnCases = findViewById(R.id.btnCases);
         btnDeaths = findViewById(R.id.btnDeaths);
@@ -35,12 +35,13 @@ public class MainActivity extends AppCompatActivity {
         btnTestingInfo = findViewById(R.id.btnTestingInfo);
         btnUserReport = findViewById(R.id.btnUserReport);
 
-        applyCustomFont();
-
+        // Ẩn layout chứa các button cho đến khi người dùng đăng nhập thành công
         buttonsLayout.setVisibility(View.GONE);
 
+        // Load LoginFragment là fragment đầu tiên
         loadFragment(new LoginFragment(), false);
 
+        // Đặt sự kiện click cho các button sau khi đăng nhập
         btnCases.setOnClickListener(v -> loadFragment(new CasesFragment(), true));
         btnSummary.setOnClickListener(v -> loadFragment(new SummaryFragment(), true));
         btnPrevention.setOnClickListener(v -> loadFragment(new PreventionFragment(), true));
@@ -48,22 +49,11 @@ public class MainActivity extends AppCompatActivity {
         btnTestingInfo.setOnClickListener(v -> loadFragment(new TestingInfoFragment(), true));
         btnUserReport.setOnClickListener(v -> loadFragment(new UserReportFragment(), true));
 
-        performLogin("user@example.com", "password123");
+        // Thực hiện đăng nhập (hoặc đăng ký) khi người dùng cung cấp thông tin
+        performLogin("user@example.com", "password123"); // Thay thế bằng dữ liệu thực tế
     }
 
-    private void applyCustomFont() {
-        Typeface customFont = ResourcesCompat.getFont(this, R.font.font_regular); // Using R.font.font_regular from res/font
-        if (customFont != null) {
-            btnCases.setTypeface(customFont);
-            btnDeaths.setTypeface(customFont);
-            btnSummary.setTypeface(customFont);
-            btnPrevention.setTypeface(customFont);
-            btnSymptoms.setTypeface(customFont);
-            btnTestingInfo.setTypeface(customFont);
-            btnUserReport.setTypeface(customFont);
-        }
-    }
-
+    // Phương thức để thực hiện đăng nhập hoặc đăng ký
     private void performLogin(String email, String password) {
         apiService.loginUser(email, password).enqueue(new Callback<ResponseModel>() {
             @Override
@@ -71,7 +61,7 @@ public class MainActivity extends AppCompatActivity {
                 if (response.isSuccessful() && response.body() != null) {
                     if (response.body().getStatus().equals("success")) {
                         Toast.makeText(MainActivity.this, "Đăng nhập thành công!", Toast.LENGTH_SHORT).show();
-                        onLoginSuccess();
+                        onLoginSuccess(); // Hiển thị các nút sau khi đăng nhập thành công
                     } else {
                         Toast.makeText(MainActivity.this, "Đăng nhập thất bại: " + response.body().getMessage(), Toast.LENGTH_SHORT).show();
                     }
@@ -87,6 +77,7 @@ public class MainActivity extends AppCompatActivity {
         });
     }
 
+    // Phương thức để load các fragment
     void loadFragment(Fragment fragment, boolean addToBackStack) {
         FragmentTransaction transaction = getSupportFragmentManager().beginTransaction();
         transaction.replace(R.id.fragmentContainer, fragment);
@@ -96,8 +87,9 @@ public class MainActivity extends AppCompatActivity {
         transaction.commit();
     }
 
+    // Phương thức này sẽ được gọi sau khi đăng nhập thành công
     public void onLoginSuccess() {
-        buttonsLayout.setVisibility(View.VISIBLE);
-        loadFragment(new CasesFragment(), false);
+        buttonsLayout.setVisibility(View.VISIBLE); // Hiển thị layout các button sau khi đăng nhập
+        loadFragment(new CasesFragment(), false); // Load fragment mặc định sau khi đăng nhập thành công
     }
 }

@@ -1,23 +1,14 @@
 <?xml version="1.0" encoding="utf-8"?>
-<LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
+<LinearLayout
+    xmlns:android="http://schemas.android.com/apk/res/android"
     android:layout_width="match_parent"
     android:layout_height="match_parent"
     android:orientation="vertical"
     android:padding="16dp">
 
-    <TextView
-        android:layout_width="wrap_content"
-        android:layout_height="wrap_content"
-        android:text="COVID-19 Cases in 2020"
-        android:textSize="18sp"
-        android:textStyle="bold"
-        android:layout_gravity="center"
-        android:layout_marginBottom="16dp" />
-
-    <ImageView
+    <com.github.mikephil.charting.charts.BarChart
+        android:id="@+id/casesChart"
         android:layout_width="match_parent"
-        android:layout_height="match_parent"
-        android:src="@drawable/covid_cases_chart"
-        android:contentDescription="COVID-19 Cases Chart" />
-
+        android:layout_height="400dp"
+        android:background="#FFFFFF" />
 </LinearLayout>
